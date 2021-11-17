@@ -1,6 +1,7 @@
 import path from 'path'
 import express from 'express'
 import React from 'react'
+import * as fs from 'fs'
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom/server'
 
@@ -13,29 +14,20 @@ const PORT = 3000
 app.use('/static', express.static(path.join(__dirname, "..", "public")))
 
 app.use('*', (req, res) => {
+    const indexFile = path.resolve(__dirname, '../public/index.html')
     const content = ReactDOMServer.renderToString(
         <StaticRouter location={req.url}>
             <App />
         </StaticRouter>
     )
-    const html = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>ReactFromScratch - SSR</title>
-        </head>
-        <body>
-            <div id="root">
-                ${content}
-            </div>
-            <script src="./static/bundle.js"></script>
-        </body>
-        </html>
-    `
-    res.send(html)
+    fs.readFile(indexFile, 'UTF-8', (err, data) => {
+        if(err) {
+            console.error('Could not read file!', err)
+            return res.json({success: false, message: 'Something went wrong!'})
+        }
+
+        return res.send(data.replace('<div id="root"></div>', `<div id="root">${content}</div>`))
+    })
 })
 
 app.listen(PORT, () => {

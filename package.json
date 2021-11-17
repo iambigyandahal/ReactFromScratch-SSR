@@ -2,12 +2,12 @@
   "name": "reactfromscratch-ssr",
   "version": "1.0.0",
   "description": "React From Scratch with Server Side Rendering",
-  "main": "webpack.config.js",
+  "main": "./server/server.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve",
-    "watch": "webpack --watch",
-    "serve": "nodemon build/index.js"
+    "build": "webpack --mode production",
+    "serve": "node .",
+    "dev:build": "webpack --mode development",
+    "dev:serve": "nodemon ."
   },
   "repository": {
     "type": "git",
@@ -22,10 +22,16 @@
   "homepage": "https://github.com/iambigyandahal/ReactFromScratch-SSR#readme",
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-runtime": "^7.16.4",
     "@babel/preset-env": "^7.16.0",
     "@babel/preset-react": "^7.16.0",
     "babel-loader": "^8.2.3",
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.4.4",
     "nodemon": "^2.0.14",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
     "webpack": "^5.62.2",
     "webpack-cli": "^4.9.1",
     "webpack-node-externals": "^3.0.0"
