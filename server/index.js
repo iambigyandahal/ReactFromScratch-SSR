@@ -11,12 +11,12 @@ const app = express()
 
 const PORT = 3000
 
-app.use('/static', express.static(path.join(__dirname, "..", "public")))
+app.use('/static', express.static(path.join(__dirname, "..", "public/assets")))
 
 app.use('*', (req, res) => {
     const indexFile = path.resolve(__dirname, '../public/index.html')
     const content = ReactDOMServer.renderToString(
-        <StaticRouter location={req.url}>
+        <StaticRouter location={req.originalUrl}>
             <App />
         </StaticRouter>
     )

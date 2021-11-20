@@ -7,8 +7,9 @@ const clientConfig = {
 	entry: './src/index.js',
 	output: {
 		filename: 'bundle.js',
-		path: path.join(__dirname, 'public')
+		path: path.join(__dirname, 'public/assets')
 	},
+	devtool: 'eval-source-map',
 	module: {
 		rules: [
 			{
@@ -23,9 +24,13 @@ const clientConfig = {
 				}
 			},
 			{
-				test: /\.s?css$/,
+				test: /\.s?(c|a)ss$/,
 				exclude: /node_modules/,
 				use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+			},
+			{
+				test: /\.(jsx?|(s?(c|a)ss))$/,
+				use: ['source-map-loader']
 			}
 		]
 	},
@@ -34,7 +39,8 @@ const clientConfig = {
 			inject: 'body',
 			minify: true,
 			publicPath: '/static',
-			template: path.resolve(__dirname, 'src/index.html')
+			template: path.resolve(__dirname, 'src/index.html'),
+			filename: '../index.html'
 		}),
 		new MiniCssExtractPlugin()
 	]
